@@ -102,15 +102,15 @@ image by a integer shrinking factor, while performing averaging of an
 input neighborhood. It can be used in streaming processing to reduce
 the size of an image that is larger the main memory. The averaging can
 effectively reduce uncorrelated noise by reducing the expected
-standard deviation by a factor $1/\sqrt{n}$ where $n$ is not number of
+standard deviation by a factor $1/\sqrt{n}$ where $n$ is the number of
 samples in the neighborhood, based on the Bienaymé formula.
 
 Electron microscopy  pushes the limits of resolution and detectable
-signal sometimes having less a 1:4 signal to noise ratio.
+signal, sometimes having less than a 1:4 signal to noise ratio.
 The ``binning'' algorithm is commonly used in processing high
-resolution electron microscopy image. It is available in packages such
+resolution electron microscopy images. It is available in packages such
 as The Boulder Laboratory for 3-D Electron Microscopy of Cell's
-IMOD\cite{IMOD}, BSoft \cite{bsoft2007}.
+IMOD\cite{IMOD}, and BSoft \cite{bsoft2007}.
 
 In this paper we demonstrate the effective performance improvements which
 can be achieved by changing the way an algorithm accesses the data. We
@@ -120,7 +120,7 @@ a 10 times speedup can be realized in some cases.
 \section{Implementation}
 
 The algorithm implemented in the \textit{BinShrink} filter can be
-described with (Eqn (\ref{eqn:Algo})) for the 2D case.
+described with (Equation \ref{eqn:Algo}) for the 2D case.
 \begin{equation}
 \label{eqn:Algo}
 \mathsf{I}_{out}(x_o,x_1) = \frac{\sum_{i=0}^{f_0}\sum_{j=0}^{f_1}\mathsf{I}_{in}(f_0 x_o+i,f_1 x_1+j)}{f_0 f_1}
@@ -138,7 +138,7 @@ work with a wide variety of pixel types.
 \subsection{Geometry}
 
 The geometry of an image includes its pixel spacing, origin, and
-image orientation. For the BinShrink filter the orientation is
+image orientation. For the \textit{BinShrink} filter the orientation is
 unchanged from the input image to the output image, but the output
 image's spacing is scaled from the input spacing by the shrink factor.
 Also, there is some complication when defining the origin. When the input image size is
@@ -160,7 +160,7 @@ input, and therefore the origin must be adjusted accordingly (See figure \ref{fi
 \end{figure}
 
 While this approach maintains the physical location of the image
-signal, it does not maintain either the full extent or the
+signal, it does not always maintain either the full extent or the
 center of the image. Therefore for algorithms such an image pyramids or certain
 neuro-imaging analysis, this method may not be appropriate, or
 assurances must be made that the input size is divisible by the shrink factor.
@@ -177,7 +177,7 @@ follows the same geometry as the \textit{Shrink} filter.
 
 This original implementation used ITK's conventional
 \textit{NeighborhoodIterator} to average the input for each output
-(See Listing \ref{lst:01}).
+pixel (See Listing \ref{lst:01}).
 
 \begin{lstlisting}[label=lst:01, caption={A selected section of code
       from \textit{BinShrink2} filter using the neighborhood iterator.}]
@@ -207,11 +207,11 @@ while ( !outIt.IsAtEnd() )
 \subsection{Optimization}
 
 The implementation we suggest for inclusion in ITK is the
-\textit{BinShrink}, which follows the geometry specifically described
-above and is not derived from the \textit{ShrinkFilter}. The initial
+\textit{BinShrink}, which follows the geometry described
+above (Section 1.1) and is not derived from the \textit{ShrinkFilter}. The initial
 implementation accesses the memory in an incoherent fashion based on
 the input neighborhood. However, it is faster to access memory in a
-linear and coherent fashion. Therefore we designed BinShrink
+linear and coherent fashion. Therefore we designed \textit{BinShrink}
 to access the input image on a per scan-line basis and to operate the
 averaging on whole scan-lines, not individual pixels. By utilizing ITK's
 \textit{ScanlineIterators}, we improved the algorithm to work on a
@@ -255,7 +255,7 @@ while ( !outputIterator.IsAtEnd() )
 
 To test our BinShrink filter we have used a synthetic function
 created by Marschner and Lobb\cite{MarschnerL94}, along with additive
-noise to create test volume images. This function is often used to
+noise to create test images. This function is often used to
 evaluate volume rendering reconstruction filters. We have rendered it
 into a 128 pixel cubic volume such that the majority of the frequencies in
 the function are sampled just above 4 times the Nyquist frequency. Such an image
@@ -384,7 +384,7 @@ for a shrink factor of 2. However, the large increase in the
 difference in the iterator operation costs. Specifically our
 performance results indicate that for a shrink factor of 24 the
 \textit{BinShrink} is 67X faster. We conjecture that this disparity is
-due to \textit{BinShrink}'s inefficient memory access pattern
+due to \textit{BinShrink2}'s inefficient memory access pattern
 causing decreased cache hits.
 
 \section{Conclusion}
