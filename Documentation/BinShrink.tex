@@ -1,5 +1,5 @@
 %
-% This docuent is based on the Insight Journal Template.
+% This document is based on the Insight Journal Template.
 % https://github.com/InsightSoftwareConsortium/InsightJournalTemplate/tree/ModularTemplate
 % 4555fc04b105b11f06dc302b76bf09c27e50727d
 
@@ -99,11 +99,11 @@ greatly increasing performance over conventional methods.
 
 Our new \textit{BinShrink} filter reduces the resolution of an input
 image by a integer shrinking factor, while performing averaging of an
-input neighborhood. It can be used in streaming processing to reduce a
-the of an image that is larger the main memory. The averaging can
+input neighborhood. It can be used in streaming processing to reduce
+the size of an image that is larger the main memory. The averaging can
 effectively reduce uncorrelated noise by reducing the expected
-standard deviation by a factor $1/\sqrt{n}$, based on the Bienaymé
-formula.
+standard deviation by a factor $1/\sqrt{n}$ where $n$ is not number of
+samples in the neighborhood, based on the Bienaymé formula.
 
 Electron microscopy  pushes the limits of resolution and detectable
 signal sometimes having less a 1:4 signal to noise ratio.
