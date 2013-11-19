@@ -25,15 +25,19 @@ namespace itk
 
 /** \class BinShrinkImageFilter
  * \brief Reduce the size of an image by an integer factor in each
- * dimension and averages by the same size.
+ * dimension while performing averaging of an input neighborhood.
  *
- * BinShrinkImageFilter reduces the size of an image by an integer factor
- * in each dimension. The algorithm implemented is a mean or box
- * filter subsample.
  *
  * The output image size in each dimension is given by:
  *
  * outputSize[j] = max( vcl_floor(inputSize[j]/shrinkFactor[j]), 1 );
+ *
+ * The algorithm implemented can be describe with the following
+ * equation for 2D:
+ * \f[
+ *  \mathsf{I}_{out}(x_o,x_1) =
+ *    \frac{\sum_{i=0}^{f_0}\sum_{j=0}^{f_1}\mathsf{I}_{in}(f_0 x_o+i,f_1 x_1+j)}{f_0 f_1}
+ * \f]
  *
  * This filter is implemented so that the starting extent of the first
  * pixel of the output matches that of the input.
