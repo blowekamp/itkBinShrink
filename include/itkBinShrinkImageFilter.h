@@ -42,6 +42,11 @@ namespace itk
  * This filter is implemented so that the starting extent of the first
  * pixel of the output matches that of the input.
  *
+ * This code was contributed in the Insight Journal paper:
+ * "BinShrink: A multi-resolution filter with cache efficient averaging"
+ *  by Lowekamp B., Chen D.
+ * http://hdl.handle.net/10380/3450
+ *
  * \ingroup ITKBinShrink
  * \ingroup Streamed
  */
