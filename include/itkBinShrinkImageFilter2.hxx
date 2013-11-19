@@ -35,7 +35,6 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
 {
 }
 
-
 /**
  *
  */
@@ -48,8 +47,8 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
   itkDebugMacro(<<"Actually executing");
 
   // Get the input and output pointers
-  InputImageConstPointer  inputPtr = this->GetInput();
-  OutputImagePointer      outputPtr = this->GetOutput();
+  InputImageConstPointer inputPtr = this->GetInput();
+  OutputImagePointer     outputPtr = this->GetOutput();
 
   typedef typename NumericTraits<typename TInputImage::PixelType>::RealType AccumulatePixelType;
 
@@ -58,12 +57,11 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
   typedef ImageRegionIteratorWithIndex<TOutputImage> OutputIterator;
   OutputIterator outIt(outputPtr, outputRegionForThread);
 
-
   // Define a few indices that will be used to transform from an input pixel
   // to an output pixel
-  OutputIndexType   outputIndex;
-  InputIndexType    inputIndex;
-  OutputOffsetType  offsetIndex  = this->ComputeOffsetIndex();
+  OutputIndexType  outputIndex;
+  InputIndexType   inputIndex;
+  OutputOffsetType offsetIndex  = this->ComputeOffsetIndex();
 
   typedef ConstShapedNeighborhoodIterator< TInputImage > ConstNeighborhoodIteratorType;
   typename ConstNeighborhoodIteratorType::RadiusType radius;
@@ -75,7 +73,6 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
 
   ConstNeighborhoodIteratorType inputIt( radius, inputPtr,
                                          inputPtr->GetRequestedRegion() );
-
 
   // Set up shaped neighbor hood by defining the offsets
   OutputOffsetType negativeOffset, positiveOffset, iOffset;
@@ -103,14 +100,12 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
       }
     }
 
-
   // convert the shrink factor for convenient multiplication
   typename TOutputImage::SizeType  factorSize;
   for (unsigned int i=0; i < TInputImage::ImageDimension; i++)
     {
     factorSize[i] = this->GetShrinkFactors()[i];
     }
-
 
   bool degeneratelySmall = false;
   const typename TInputImage::SizeType &inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
@@ -138,7 +133,7 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
   */
 
   // support progress methods/callbacks
-  ProgressReporter progress(this, threadId, outputRegionForThread.GetNumberOfPixels());
+  ProgressReporter progress(this, threadId, outputRegionForThread.GetNumberOfPixels() );
 
   while ( !outIt.IsAtEnd() )
     {
@@ -153,7 +148,6 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
 
     // Set the iterator at the desired location
     inputIt.SetLocation( inputIndex );
-
 
     AccumulatePixelType sum = NumericTraits<AccumulatePixelType>::Zero;
     // Walk the neighborhood
@@ -175,7 +169,6 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
     }
 }
 
-
 /**
  *
  */
@@ -188,7 +181,7 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
   Superclass::GenerateInputRequestedRegion();
 
   // get pointers to the input and output
-  InputImagePointer  inputPtr = const_cast<TInputImage *> (this->GetInput());
+  InputImagePointer  inputPtr = const_cast<TInputImage *> (this->GetInput() );
   OutputImagePointer outputPtr = this->GetOutput();
 
   if ( !inputPtr || !outputPtr )
@@ -204,7 +197,6 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
   const typename TOutputImage::IndexType& outputRequestedRegionStartIndex
     = outputPtr->GetRequestedRegion().GetIndex();
 
-
   typename TInputImage::IndexType  inputIndex0,  inputIndex1;
   typename TInputImage::SizeType   inputSize;
 
@@ -215,8 +207,7 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
     factorSize[i] = this->GetShrinkFactors()[i];
     }
 
-  OutputOffsetType  offsetIndex  = this->ComputeOffsetIndex();
-
+  OutputOffsetType offsetIndex  = this->ComputeOffsetIndex();
 
   typename TInputImage::OffsetType negativeOffset, positiveOffset;
   typedef typename TInputImage::OffsetType::OffsetValueType OffsetValueType;
@@ -229,22 +220,21 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
   for ( unsigned int i=0; i < TInputImage::ImageDimension; i++)
     {
     inputIndex0[i] = outputRequestedRegionStartIndex[i]*factorSize[i] + offsetIndex[i] + negativeOffset[i];
-    inputIndex1[i] = (outputRequestedRegionStartIndex[i]+outputRequestedRegionSize[i]-1)*factorSize[i] + offsetIndex[i] + positiveOffset[i];
+    inputIndex1[i] =
+      (outputRequestedRegionStartIndex[i]+outputRequestedRegionSize[i]-
+       1)*factorSize[i] + offsetIndex[i] + positiveOffset[i];
 
     inputSize[i] = inputIndex1[i] - inputIndex0[i] + 1;
     }
-
 
   typename TInputImage::RegionType inputRequestedRegion;
   inputRequestedRegion.SetIndex( inputIndex0 );
   inputRequestedRegion.SetSize( inputSize );
 
-
   inputRequestedRegion.Crop( inputPtr->GetLargestPossibleRegion() );
 
   inputPtr->SetRequestedRegion( inputRequestedRegion );
 }
-
 
 /**
  *
@@ -260,12 +250,11 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
 
   assert( inputPtr && outputPtr );
 
-  OutputIndexType           outputIndex;
-  InputIndexType            inputIndex;
-  OutputOffsetType          offsetIndex;
+  OutputIndexType  outputIndex;
+  InputIndexType   inputIndex;
+  OutputOffsetType offsetIndex;
 
   typename TOutputImage::PointType tempPoint;
-
 
   // use this index to compute the offset everywhere in this class
   outputIndex = outputPtr->GetLargestPossibleRegion().GetIndex();

@@ -1,18 +1,15 @@
-
 #include "itkBinShrinkImageFilter.h"
 #include "itkShrinkImageFilter.h"
 #include "itkPipelineMonitorImageFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageRegionConstIteratorWithIndex.h"
 
-
 int itkBinShrinkImageFilterTest1( int , char *[] )
 {
 
-   // typedefs to simplify the syntax
-  typedef itk::Image<int, 2>   ImageType;
+  // typedefs to simplify the syntax
+  typedef itk::Image<int, 2> ImageType;
   ImageType::Pointer sourceImage = ImageType::New();
-
 
   typedef itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
 
@@ -25,15 +22,14 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
   sourceImage->SetRegions( region );
   sourceImage->Allocate();
 
-  {
-  itk::ImageRegionIteratorWithIndex<ImageType> outIt(sourceImage, region);
-  for ( outIt.GoToBegin(); !outIt.IsAtEnd(); ++outIt )
     {
-    // we multiply by ten so for more precision
-    outIt.Set( outIt.GetIndex()[0]*10 );
+    itk::ImageRegionIteratorWithIndex<ImageType> outIt(sourceImage, region);
+    for ( outIt.GoToBegin(); !outIt.IsAtEnd(); ++outIt )
+      {
+      // we multiply by ten so for more precision
+      outIt.Set( outIt.GetIndex()[0]*10 );
+      }
     }
-  }
-
 
   // assemple pipeline
   MonitorFilter::Pointer monitor1 = MonitorFilter::New();
@@ -59,7 +55,8 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
     monitor2->Update();
 
     // check values
-    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(), monitor2->GetOutput()->GetLargestPossibleRegion() );
+    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(),
+                                                            monitor2->GetOutput()->GetLargestPossibleRegion() );
     for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
       {
       if (inIt.Get() != inIt.GetIndex()[0]*10)
@@ -84,7 +81,8 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
     monitor2->UpdateLargestPossibleRegion();
 
     // check values
-    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(), monitor2->GetOutput()->GetLargestPossibleRegion() );
+    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(),
+                                                            monitor2->GetOutput()->GetLargestPossibleRegion() );
     for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
       {
       if (inIt.Get() != (inIt.GetIndex()[0]*factors[0] )*10 + 5 )
@@ -109,7 +107,8 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
     monitor2->UpdateLargestPossibleRegion();
 
     // check values
-    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(), monitor2->GetOutput()->GetLargestPossibleRegion() );
+    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(),
+                                                            monitor2->GetOutput()->GetLargestPossibleRegion() );
     for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
       {
       if (inIt.Get() != (inIt.GetIndex()[0]*factors[0] )*10 + 5 )
@@ -125,8 +124,6 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
     failed = true;
     }
 
-
-
   try
     {
     // update with 5,2 shrink factor
@@ -136,7 +133,8 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
     monitor2->UpdateLargestPossibleRegion();
 
     // check values
-    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(), monitor2->GetOutput()->GetLargestPossibleRegion() );
+    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(),
+                                                            monitor2->GetOutput()->GetLargestPossibleRegion() );
     for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
       {
       if (inIt.Get() != (inIt.GetIndex()[0]*factors[0]+2)*10)
@@ -160,14 +158,14 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
   sourceImage->SetRegions( region );
   sourceImage->Allocate();
 
-  {
-  itk::ImageRegionIteratorWithIndex<ImageType> outIt(sourceImage, region);
-  for ( outIt.GoToBegin(); !outIt.IsAtEnd(); ++outIt )
     {
-    // we multiply by ten for more precision
-    outIt.Set( outIt.GetIndex()[0]*10 );
+    itk::ImageRegionIteratorWithIndex<ImageType> outIt(sourceImage, region);
+    for ( outIt.GoToBegin(); !outIt.IsAtEnd(); ++outIt )
+      {
+      // we multiply by ten for more precision
+      outIt.Set( outIt.GetIndex()[0]*10 );
+      }
     }
-  }
   monitor1->SetInput( sourceImage );
 
   try
@@ -179,7 +177,8 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
     monitor2->UpdateLargestPossibleRegion();
 
     // check values
-    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(), monitor2->GetOutput()->GetLargestPossibleRegion() );
+    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(),
+                                                            monitor2->GetOutput()->GetLargestPossibleRegion() );
     for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
       {
       if (inIt.Get() != (inIt.GetIndex()[0]*factors[0] )*10 + 5 )
@@ -204,7 +203,8 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
     monitor2->UpdateLargestPossibleRegion();
 
     // check values
-    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(), monitor2->GetOutput()->GetLargestPossibleRegion() );
+    itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(),
+                                                            monitor2->GetOutput()->GetLargestPossibleRegion() );
     for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
       {
       if (inIt.Get() != (inIt.GetIndex()[0]*factors[0]+1 )*10 )
@@ -226,7 +226,7 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
 
   for (unsigned int shrink = 1; shrink < 12; ++shrink)
     {
-     // update with 3,1 shrink factor
+    // update with 3,1 shrink factor
     unsigned int factors[2] = { 1, shrink };
     std::cout << "== Testing with shrink factors " << factors[0] << " " << factors[1] << " == " << std::endl;
 
@@ -254,7 +254,8 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
           bin->SetShrinkFactors(factors);
           monitor2->UpdateLargestPossibleRegion();
           // check values
-          itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(), monitor2->GetOutput()->GetLargestPossibleRegion() );
+          itk::ImageRegionConstIteratorWithIndex<ImageType> inIt( monitor2->GetOutput(),
+                                                                  monitor2->GetOutput()->GetLargestPossibleRegion() );
           bool lfailed = false;
           for (inIt.GoToBegin(); !inIt.IsAtEnd(); ++inIt)
             {
@@ -265,7 +266,8 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
                 {
                 std::cout << "--Resolution " << x << " " << y << "--" << std::endl;
                 }
-              std::cout << "Wrong pixel value at " << inIt.GetIndex() << " of " << inIt.Get() << ", expected: " << expectedValue << std::endl;
+              std::cout << "Wrong pixel value at " << inIt.GetIndex() << " of " << inIt.Get() << ", expected: " <<
+              expectedValue << std::endl;
               lfailed = failed = true;
               }
             }

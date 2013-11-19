@@ -42,15 +42,15 @@ namespace itk
  * \ingroup Streamed
  */
 template <class TInputImage, class TOutputImage>
-class ITK_EXPORT BinShrinkImageFilter:
-    public ImageToImageFilter<TInputImage,TOutputImage>
+class ITK_EXPORT BinShrinkImageFilter :
+  public         ImageToImageFilter<TInputImage,TOutputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef BinShrinkImageFilter                          Self;
-  typedef ImageToImageFilter<TInputImage,TOutputImage>   Superclass;
-  typedef SmartPointer<Self>                            Pointer;
-  typedef SmartPointer<const Self>                      ConstPointer;
+  typedef BinShrinkImageFilter                         Self;
+  typedef ImageToImageFilter<TInputImage,TOutputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -59,19 +59,18 @@ public:
   itkTypeMacro(BinShrinkImageFilter, ShrinkImageFilter);
 
   /** Typedef to images */
-  typedef TOutputImage                                OutputImageType;
-  typedef TInputImage                                 InputImageType;
-  typedef typename OutputImageType::Pointer           OutputImagePointer;
-  typedef typename InputImageType::Pointer            InputImagePointer;
-  typedef typename InputImageType::ConstPointer       InputImageConstPointer;
+  typedef TOutputImage                          OutputImageType;
+  typedef TInputImage                           InputImageType;
+  typedef typename OutputImageType::Pointer     OutputImagePointer;
+  typedef typename InputImageType::Pointer      InputImagePointer;
+  typedef typename InputImageType::ConstPointer InputImageConstPointer;
 
-  typedef typename TOutputImage::OffsetType           OutputOffsetType;
-  typedef typename TOutputImage::IndexType            OutputIndexType;
-  typedef typename TInputImage::IndexType             InputIndexType;
+  typedef typename TOutputImage::OffsetType OutputOffsetType;
+  typedef typename TOutputImage::IndexType  OutputIndexType;
+  typedef typename TInputImage::IndexType   InputIndexType;
 
   /** Typedef to describe the output image region type. */
   typedef typename TOutputImage::RegionType OutputImageRegionType;
-
 
   /** ImageDimension enumeration. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -118,7 +117,7 @@ protected:
 
 private:
   BinShrinkImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);       //purposely not implemented
 
   ShrinkFactorsType m_ShrinkFactors;
 

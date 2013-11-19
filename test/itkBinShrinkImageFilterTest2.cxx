@@ -50,7 +50,8 @@ bool CheckValueIsPhysicalPoint( const TImageType *img )
           diff[j] = pt[j] - it.Get()[j];
           }
 
-        std::cout << "Index: " << it.GetIndex() << " Point: " << pt << " Value: " << it.Get() << " Difference:" << diff << std::endl;
+        std::cout << "Index: " << it.GetIndex() << " Point: " << pt << " Value: " << it.Get() << " Difference:" <<
+          diff << std::endl;
         match = false;
         }
       }
@@ -62,12 +63,12 @@ bool CheckValueIsPhysicalPoint( const TImageType *img )
 
 }
 
-
 int itkBinShrinkImageFilterTest2( int , char *[] )
 {
 
   const unsigned int ImageDimension = 2;
-  typedef itk::Vector<double, ImageDimension> PixelType;
+
+  typedef itk::Vector<double, ImageDimension>   PixelType;
   typedef itk::Image<PixelType, ImageDimension> ImageType;
 
   typedef itk::PhysicalPointImageSource<ImageType> SourceType;
@@ -80,7 +81,7 @@ int itkBinShrinkImageFilterTest2( int , char *[] )
   source->SetOrigin( origin );
 
   unsigned int factors[] = {1,1};
-  bool pass = true;
+  bool         pass = true;
 
   for( unsigned int xf = 1; xf < 5; ++xf )
     {
@@ -89,12 +90,12 @@ int itkBinShrinkImageFilterTest2( int , char *[] )
       {
       factors[1] = yf;
 
-    std::cout << "Testing with shrink factors:" << xf << " " << yf << std::endl;
+      std::cout << "Testing with shrink factors:" << xf << " " << yf << std::endl;
 
       typedef itk::BinShrinkImageFilter<ImageType, ImageType> FilterType;
       FilterType::Pointer shrink = FilterType::New();
 
-      shrink->SetInput(source->GetOutput());
+      shrink->SetInput(source->GetOutput() );
 
       std::cout << "Testing with shrink factors:" << xf << " " << yf << std::endl;
       shrink->SetShrinkFactors( factors );
@@ -106,7 +107,6 @@ int itkBinShrinkImageFilterTest2( int , char *[] )
         }
       }
     }
-
 
   if ( pass )
     {

@@ -24,7 +24,6 @@
 #define ThreadIdType int
 #endif
 
-
 namespace itk
 {
 
@@ -58,15 +57,15 @@ namespace itk
  * \ingroup Streamed
  */
 template <class TInputImage, class TOutputImage>
-class ITK_EXPORT BinShrinkImageFilter2:
-    public ShrinkImageFilter<TInputImage,TOutputImage>
+class ITK_EXPORT BinShrinkImageFilter2 :
+  public         ShrinkImageFilter<TInputImage,TOutputImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef BinShrinkImageFilter2                          Self;
-  typedef ShrinkImageFilter<TInputImage,TOutputImage>   Superclass;
-  typedef SmartPointer<Self>                            Pointer;
-  typedef SmartPointer<const Self>                      ConstPointer;
+  typedef BinShrinkImageFilter2                       Self;
+  typedef ShrinkImageFilter<TInputImage,TOutputImage> Superclass;
+  typedef SmartPointer<Self>                          Pointer;
+  typedef SmartPointer<const Self>                    ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -75,15 +74,15 @@ public:
   itkTypeMacro(BinShrinkImageFilter2, ShrinkImageFilter);
 
   /** Typedef to images */
-  typedef TOutputImage                                OutputImageType;
-  typedef TInputImage                                 InputImageType;
-  typedef typename OutputImageType::Pointer           OutputImagePointer;
-  typedef typename InputImageType::Pointer            InputImagePointer;
-  typedef typename InputImageType::ConstPointer       InputImageConstPointer;
+  typedef TOutputImage                          OutputImageType;
+  typedef TInputImage                           InputImageType;
+  typedef typename OutputImageType::Pointer     OutputImagePointer;
+  typedef typename InputImageType::Pointer      InputImagePointer;
+  typedef typename InputImageType::ConstPointer InputImageConstPointer;
 
-  typedef typename TOutputImage::IndexType            OutputIndexType;
-  typedef typename TInputImage::IndexType             InputIndexType;
-  typedef typename TOutputImage::OffsetType           OutputOffsetType;
+  typedef typename TOutputImage::IndexType  OutputIndexType;
+  typedef typename TInputImage::IndexType   InputIndexType;
+  typedef typename TOutputImage::OffsetType OutputOffsetType;
 
   /** Typedef to describe the output image region type. */
   typedef typename TOutputImage::RegionType OutputImageRegionType;
@@ -101,19 +100,19 @@ public:
    * \sa ProcessObject::GenerateInputRequestedRegion() */
   virtual void GenerateInputRequestedRegion();
 
-
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   itkConceptMacro(InputConvertibleToOutputCheck,
-    (Concept::Convertible<typename TInputImage::PixelType, typename TOutputImage::PixelType>));
+                  (Concept::Convertible<typename TInputImage::PixelType, typename TOutputImage::PixelType>) );
   itkConceptMacro(SameDimensionCheck,
-    (Concept::SameDimension<ImageDimension, OutputImageDimension>));
+                  (Concept::SameDimension<ImageDimension, OutputImageDimension>) );
   /** End concept checking */
 #endif
 
 protected:
   BinShrinkImageFilter2();
-  ~BinShrinkImageFilter2() {};
+  ~BinShrinkImageFilter2() {
+  }
 
   /** BinShrinkImageFilter2 can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData() routine
@@ -130,9 +129,10 @@ protected:
 
 private:
   BinShrinkImageFilter2(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);        //purposely not implemented
 
   OutputOffsetType ComputeOffsetIndex(void);
+
 };
 
 } // end namespace itk

@@ -1,4 +1,3 @@
-
 #include "itkTestingMacros.h"
 #include "itkRGBPixel.h"
 #include "itkImageFileReader.h"
@@ -12,11 +11,10 @@
 namespace
 {
 
-
 template<class  TInputImageType >
 int itkBinShrinkExampleImp( const std::string &infname,
-                                       const std::string &outfname,
-                                       unsigned int shrink )
+                            const std::string &outfname,
+                            unsigned int shrink )
 {
   typedef TInputImageType InputImageType;
   typedef TInputImageType OutputImageType;
@@ -49,7 +47,6 @@ int itkBinShrinkExampleImp( const std::string &infname,
   return EXIT_SUCCESS;
 }
 
-
 template< class TComponent >
 int itkBinShrinkExampleDispatch( const std::string &imageFileName,
                                  const std::string &outfname,
@@ -64,7 +61,7 @@ int itkBinShrinkExampleDispatch( const std::string &imageFileName,
       {
       return itkBinShrinkExampleImp<itk::Image<itk::RGBPixel<TComponent>,2> >(imageFileName, outfname, shrink);
       }
-    else  if (numberOfComponents > 1)
+    else if (numberOfComponents > 1)
       {
       return itkBinShrinkExampleImp<itk::VectorImage<TComponent,2> >(imageFileName, outfname, shrink);
       }
@@ -77,10 +74,10 @@ int itkBinShrinkExampleDispatch( const std::string &imageFileName,
       return itkBinShrinkExampleImp<itk::Image<itk::RGBPixel<TComponent>,2> >(imageFileName, outfname, shrink);
       }
     else if (numberOfComponents == 3)
-       {
-       return itkBinShrinkExampleImp<itk::Image<itk::Vector<TComponent>,3> >(imageFileName, outfname, shrink);
-       }
-     else if (numberOfComponents > 1)
+      {
+      return itkBinShrinkExampleImp<itk::Image<itk::Vector<TComponent>,3> >(imageFileName, outfname, shrink);
+      }
+    else if (numberOfComponents > 1)
       {
       return itkBinShrinkExampleImp<itk::VectorImage<TComponent,3> >(imageFileName, outfname, shrink);
       }
@@ -93,21 +90,20 @@ int itkBinShrinkExampleDispatch( const std::string &imageFileName,
     }
 }
 
-
 }
 
 int itkBinShrinkExample( int argc, char *argv[] )
 {
 
   if ( argc < 3 )
-  {
+    {
     std::cerr << "Missing arguments" << std::endl;
     std::cerr << "Usage: " << argv[0] << " InputImage OutputImage shrinkFactor" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
-  const std::string infname = argv[1];
-  const std::string outfname = argv[2];
+  const std::string  infname = argv[1];
+  const std::string  outfname = argv[2];
   const unsigned int shrink = atoi( argv[3] );
 
   itk::ImageIOBase::Pointer iobase =
@@ -120,14 +116,12 @@ int itkBinShrinkExample( int argc, char *argv[] )
   iobase->SetFileName( infname );
   iobase->ReadImageInformation();
 
-
   std::cout << iobase << std::endl;
 
   const itk::ImageIOBase::IOComponentType componentType = iobase->GetComponentType();
-  const itk::ImageIOBase::IOPixelType pixelType = iobase->GetPixelType();
-  const unsigned int dimension = iobase->GetNumberOfDimensions();
-  const unsigned int numComp = iobase->GetNumberOfComponents();
-
+  const itk::ImageIOBase::IOPixelType     pixelType = iobase->GetPixelType();
+  const unsigned int                      dimension = iobase->GetNumberOfDimensions();
+  const unsigned int                      numComp = iobase->GetNumberOfComponents();
 
   switch(componentType)
     {
@@ -160,4 +154,3 @@ int itkBinShrinkExample( int argc, char *argv[] )
   std::cerr << "Unexcpected program flow!" << std::endl;
   return EXIT_FAILURE;
 }
-
