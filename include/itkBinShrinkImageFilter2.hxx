@@ -76,7 +76,6 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
 
   // Set up shaped neighbor hood by defining the offsets
   OutputOffsetType negativeOffset, positiveOffset, iOffset;
-  typedef typename OutputOffsetType::OffsetValueType OffsetValueType;
   for ( unsigned int i=0; i < TInputImage::ImageDimension; i++)
     {
     negativeOffset[i] = -Math::Ceil<OffsetValueType>( this->GetShrinkFactors()[i]*0.5 - 0.5);
@@ -210,7 +209,6 @@ BinShrinkImageFilter2<TInputImage,TOutputImage>
   OutputOffsetType offsetIndex  = this->ComputeOffsetIndex();
 
   typename TInputImage::OffsetType negativeOffset, positiveOffset;
-  typedef typename TInputImage::OffsetType::OffsetValueType OffsetValueType;
   for ( unsigned int i=0; i < TInputImage::ImageDimension; i++)
     {
     negativeOffset[i] = -Math::Ceil<OffsetValueType>( this->GetShrinkFactors()[i]*0.5 - 0.5);
