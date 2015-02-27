@@ -3,6 +3,7 @@
 import SimpleITK as sitk
 import numpy as np
 import math
+import itertools
 from timeit import Timer
 import matplotlib.pyplot as plt
 
@@ -22,6 +23,14 @@ print "Using factors:", factors
 n = np.random.normal(0, scale=1.0, size=sz).astype(np.float32)
 img = sitk.GetImageFromArray(n)
 
+def np_shrink1(array,b):
+    trim = [ s%b for s in n.shape]
+    accum = np.zeros([ s//b for s in array.shape])
+    for offset in itertools.product(range(b), repeat=3):
+        #print offset
+        accum += array[offset[0]::b, offset[1]::b, offset[2]::b]
+    return accum
+
 # Bin Shrink
 def my_shrink1(img, shrink):
     return sitk.BinShrink(img,[shrink]*3)
@@ -39,13 +48,23 @@ def my_mean(img,shrink):
     return sitk.Shrink(sitk.Mean(img, [r]*3), [shrink]*3)
 
 #factors = [2,4,8]
-med_times1 = []
 
+med_times0 = []
+print "Timing np shrink1..."
+for factor in factors:
+    timer = Timer( lambda: np_shrink1(n, factor) )
+    times = timer.repeat( repeat=t_repeat, number= t_number )
+    med_times0.append(np.median(times) )
+print med_times0
+
+
+med_times1 = []
 print "Timing shrink1..."
 for factor in factors:
     timer = Timer( lambda: my_shrink1(img, factor) )
     times = timer.repeat( repeat=t_repeat, number= t_number )
     med_times1.append(np.median(times) )
+print med_times1
 
 print "Timing shrink2..."
 med_times2 = []
