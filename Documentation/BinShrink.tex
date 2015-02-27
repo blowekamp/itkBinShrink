@@ -222,16 +222,16 @@ while ( !outputIterator.IsAtEnd() )
   {
   const OutputIndexType outputIndex = outputIterator.GetIndex();
 
-  typename std::vector<OutputOffsetType>::const\_iterator offset = offsets.begin();
+  typename std::vector<OutputOffsetType>::const_iterator offset = offsets.begin();
   const InputIndexType startInputIndex = outputIndex * factorSize;
 
   while ( ++offset != offsets.end() )
     {
     inputIterator.SetIndex( startInputIndex+*offset );
 
-    for( size\_t i = 0; i < ln; ++i )
+    for( size_t i = 0; i < ln; ++i )
       {
-      for( size\_t j = 0; j < factorSize[0]; ++j)
+      for( size_t j = 0; j < factorSize[0]; ++j)
         {
         accBuffer[i] += inputIterator.Get();
         ++inputIterator;
@@ -239,10 +239,10 @@ while ( !outputIterator.IsAtEnd() )
       }
     }
 
-    for ( size\_t j = 0; j <ln;++j)
+    for ( size_t j = 0; j <ln;++j)
     {
       accBuffer[j] = accBuffer[j] * inumSamples;
-      outputIterator.Set( static\_cast<OutputPixelType>(accBuffer[j]) );
+      outputIterator.Set( static_cast<OutputPixelType>(accBuffer[j]) );
       ++outputIterator;
     }
 
