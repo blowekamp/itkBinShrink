@@ -15,8 +15,8 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinShrinkImageFilter2_h
-#define __itkBinShrinkImageFilter2_h
+#ifndef itkBinShrinkImageFilter2_h
+#define itkBinShrinkImageFilter2_h
 
 #include "itkShrinkImageFilter.h"
 
@@ -98,7 +98,7 @@ public:
    * implementation for GenerateInputRequestedRegion() in order to inform the
    * pipeline execution model.
    * \sa ProcessObject::GenerateInputRequestedRegion() */
-  virtual void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion() ITK_OVERRIDE;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
@@ -125,7 +125,7 @@ protected:
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData() */
   void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread,
-                            ThreadIdType threadId );
+                            ThreadIdType threadId ) ITK_OVERRIDE;
 
 private:
   BinShrinkImageFilter2(const Self&); //purposely not implemented
