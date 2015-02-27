@@ -19,8 +19,6 @@ int itkBinShrinkExampleImp( const std::string &infname,
   typedef TInputImageType InputImageType;
   typedef TInputImageType OutputImageType;
 
-  typedef typename TInputImageType::PixelType InputPixelType;
-
   typedef itk::ImageFileReader<InputImageType>  ReaderType;
   typedef itk::ImageFileWriter<OutputImageType> WriterType;
 
