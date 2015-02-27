@@ -15,20 +15,18 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#ifndef __itkBinShrinkImageFilter_hxx
-#define __itkBinShrinkImageFilter_hxx
+#ifndef itkBinShrinkImageFilter_hxx
+#define itkBinShrinkImageFilter_hxx
 
 #include "itkBinShrinkImageFilter.h"
 #include "itkImageScanlineIterator.h"
 #include "itkProgressReporter.h"
 #include <numeric>
+#include <functional>
 
 namespace itk
 {
 
-/**
- *
- */
 template< class TInputImage, class TOutputImage >
 BinShrinkImageFilter< TInputImage, TOutputImage >
 ::BinShrinkImageFilter()
@@ -39,9 +37,6 @@ BinShrinkImageFilter< TInputImage, TOutputImage >
     }
 }
 
-/**
- *
- */
 template< class TInputImage, class TOutputImage >
 void
 BinShrinkImageFilter< TInputImage, TOutputImage >
@@ -57,9 +52,6 @@ BinShrinkImageFilter< TInputImage, TOutputImage >
   os << std::endl;
 }
 
-/**
- *
- */
 template< class TInputImage, class TOutputImage >
 void
 BinShrinkImageFilter< TInputImage, TOutputImage >
@@ -99,9 +91,6 @@ BinShrinkImageFilter< TInputImage, TOutputImage >
   m_ShrinkFactors[i] = factor;
 }
 
-/**
- *
- */
 template <class TInputImage, class TOutputImage>
 void
 BinShrinkImageFilter<TInputImage,TOutputImage>
@@ -111,22 +100,22 @@ BinShrinkImageFilter<TInputImage,TOutputImage>
   itkDebugMacro(<<"Actually executing on region:" << outputRegionForThread);
 
   // Get the input and output pointers
-  InputImageConstPointer inputPtr = this->GetInput();
-  OutputImagePointer     outputPtr = this->GetOutput();
+  const InputImageType * inputPtr = this->GetInput();
+  OutputImageType *      outputPtr = this->GetOutput();
 
-  typedef typename NumericTraits<typename TInputImage::PixelType>::RealType AccumulatePixelType;
+  typedef typename InputImageType::PixelType                 InputPixelType;
+  typedef typename OutputImageType::PixelType                OutputPixelType;
+  typedef typename NumericTraits< InputPixelType >::RealType AccumulatePixelType;
 
-  typedef typename TOutputImage::PixelType OutputPixelType;
-
-  typedef ImageScanlineConstIterator< TOutputImage > InputConstIteratorType;
-  typedef ImageScanlineIterator< TOutputImage >      OutputIteratorType;
+  typedef ImageScanlineConstIterator< InputImageType > InputConstIteratorType;
+  typedef ImageScanlineIterator< OutputImageType >     OutputIteratorType;
 
   InputConstIteratorType inputIterator(inputPtr, inputPtr->GetRequestedRegion() );
   OutputIteratorType     outputIterator(outputPtr, outputRegionForThread);
 
   // Set up shaped neighbor hood by defining the offsets
   OutputOffsetType negativeOffset, positiveOffset, iOffset;
-  typedef typename OutputOffsetType::OffsetValueType OffsetValueType;
+
   negativeOffset[0] = 0;
   positiveOffset[0] = 0;
   for ( unsigned int i=1; i < TInputImage::ImageDimension; ++i)
@@ -153,7 +142,7 @@ BinShrinkImageFilter<TInputImage,TOutputImage>
 
   // allocate acumulate line
   const size_t         ln =  outputRegionForThread.GetSize(0);
-  AccumulatePixelType *accBuffer = 0;
+  AccumulatePixelType *accBuffer = ITK_NULLPTR;
   accBuffer = new AccumulatePixelType[ln];
 
   try
@@ -166,7 +155,9 @@ BinShrinkImageFilter<TInputImage,TOutputImage>
       }
 
     const size_t numSamples = std::accumulate( this->GetShrinkFactors().Begin(),
-                                               this->GetShrinkFactors().End(), 1u, std::multiplies<size_t>() );
+                                               this->GetShrinkFactors().End(),
+                                               size_t(1),
+                                               std::multiplies<size_t>() );
     const double inumSamples = 1.0 / (double)numSamples;
 
     const unsigned int numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() /
@@ -233,16 +224,13 @@ BinShrinkImageFilter<TInputImage,TOutputImage>
     }
   catch(...)
     {
-    delete accBuffer;
+    delete [] accBuffer;
     throw;
     }
-  delete accBuffer;
+  delete [] accBuffer;
 
 }
 
-/**
- *
- */
 template <class TInputImage, class TOutputImage>
 void
 BinShrinkImageFilter<TInputImage,TOutputImage>
