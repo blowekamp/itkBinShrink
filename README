@@ -2,7 +2,7 @@
 This ITK module contains the development of the BinShrinkImageFilter.
 
 It has been contributed to the Insight Journal and is currently
-available as part of ITK.
+available as part of ITK and should be used from the ITK repository.
 
 "BinShrink: A multi-resolution filter with cache efficient averaging"
  by Lowekamp B., Chen D.
@@ -13,33 +13,13 @@ General
 
 This is a module for ITK: The Insight Toolkit for Segmentation and
 Registration. It is designed to work with the ITKv4 modular system and
-to be places it ITK/Modules/External.
+to be placed in ITK/Modules/External.
 
 
 Getting Started
 ---------------
 
-The official ITKv4 Wiki documentation on adding an external module is here:
-http://www.itk.org/Wiki/ITK_Release_4/Modularization/Add_an_external_module_(external_module)
-
-The following is a breif list of instructions to get a external module
-started in a repository:
-
-mkdir ITK/Modules/External/itkMyModule
-cd ITK/Modules/External/itkMyModule
-git init
-git fetch git@github.com:blowekamp/itkExternalTemplate.git
-git merge FETCH_HEAD
-
-The CMakeLists.txt and itk-modules need to be modified with the name
-of the module, something along the following:
-
-sed 's/ExternalTemplate/MyModule/g' CMakeLists.txt itk-module.cmake
-
-There is the inplace option to sed, but it's not portable, so do this
-change by hand or look up the option in sed.
-
-Then hack away at you code in include, src, and tests.
+Download the latest ITK. The BinShrink filter is inside.
 
 License
 -------
